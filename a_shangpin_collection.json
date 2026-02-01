@@ -1,0 +1,242 @@
+{
+	"info": {
+		"_postman_id": "eb3d4afe-fb44-4b27-8faf-843de6ffd137",
+		"name": "KDKC 项目实战",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "接口测试集合",
+			"item": [
+				{
+					"name": "获取登录验证UUID",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonDate = pm.response.json();\r",
+									"pm.environment.set(\"uuid\",jsonDate.uuid);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://kdtx-test.itheima.net/api/captchaImage",
+							"protocol": "https",
+							"host": [
+								"kdtx-test",
+								"itheima",
+								"net"
+							],
+							"path": [
+								"api",
+								"captchaImage"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "登录接口",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonDate=pm.response.json();\r",
+									"pm.environment.set(\"token\",jsonDate.token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"username\":\"admin\",\r\n\"password\":\"HM_2023_test\",\r\n\"code\":\"2\",\r\n\"uuid\":\"{{uuid}}\"\r\n}"
+						},
+						"url": {
+							"raw": "http://kdtx-test.itheima.net/api/login",
+							"protocol": "http",
+							"host": [
+								"kdtx-test",
+								"itheima",
+								"net"
+							],
+							"path": [
+								"api",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "添加产品接口",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"name\":\"postman接口测试开发提升课01\",\r\n\"subject\":\"6\",\r\n\"price\":99,\r\n\"applicablePerson\":\"2\",\r\n\"info\":\"postman接口测试开发提升课01\"\r\n}"
+						},
+						"url": {
+							"raw": "http://kdtx-test.itheima.net/api/clues/course",
+							"protocol": "http",
+							"host": [
+								"kdtx-test",
+								"itheima",
+								"net"
+							],
+							"path": [
+								"api",
+								"clues",
+								"course"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "文件上传接口",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.environment.set(\"pictureUrl\",jsonData.url);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "multipart/form-data",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "文件.txt"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://kdtx-test.itheima.net/api/common/upload",
+							"protocol": "http",
+							"host": [
+								"kdtx-test",
+								"itheima",
+								"net"
+							],
+							"path": [
+								"api",
+								"common",
+								"upload"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "合同上传接口",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"postman测试888\",\r\n    \"phone\":\"13243278639\",\r\n    \"contractNo\":\"HT100120013214232\",\r\n    \"subject\": \"6\",\r\n    \"courseId\": 99,\r\n    \"channel\": \"0\",\r\n    \"activityId\": 77,\r\n    \"fileName\": \"{{pictureUrl}}\"\r\n}"
+						},
+						"url": {
+							"raw": "https://kdtx-test.itheima.net/api/contract?",
+							"protocol": "https",
+							"host": [
+								"kdtx-test",
+								"itheima",
+								"net"
+							],
+							"path": [
+								"api",
+								"contract"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
